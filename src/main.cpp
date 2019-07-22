@@ -1,3 +1,4 @@
+#include <processor.h>
 #include <table.h>
 #include <iostream>
 #include <string>
@@ -16,13 +17,30 @@ int main(int argc, char* argv[]) {
 
   std::cout << "Opening " << filePath << std::endl;
 
-  try {
-    table wordTable(filePath);
-    std::cout << "Tabel : " << std::endl;
-    wordTable.print();
+  table wordTable(filePath);
+  std::cout << "Table : " << std::endl;
+  wordTable.print();
 
-  } catch (const std::exception& e) {
-    std::cerr << e.what() << '\n';
+  std::string searchQuery;
+  int threadCount;
+
+  std::cout << "Search query : ";
+  std::cin >> searchQuery;
+
+  std::cout << "Thread count : ";
+  std::cin >> threadCount;
+
+  processor searchProcessor(wordTable, searchQuery, threadCount);
+
+  searchProcessor.process();
+
+  if (searchProcessor.isFound()) {
+    std::cout << "Word found at row " << searchProcessor.getFoundRow()
+              << " col " << searchProcessor.getFoundCol() << " on the "
+              << searchProcessor.getFoundDirection() << " direction "
+              << std::endl;
+  }else{
+    std::cout<<"Word not found"<<std::endl;
   }
 
   return 0;

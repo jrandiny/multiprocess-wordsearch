@@ -1,3 +1,4 @@
+#pragma once
 #include <string>
 #include <vector>
 
@@ -10,6 +11,7 @@ class table {
   std::vector<std::vector<char>> data;
 
  public:
+  table() {}
   table(std::string filename);
 
   void print() const;
