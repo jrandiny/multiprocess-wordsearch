@@ -28,10 +28,14 @@ table::table(std::string filename) {
 std::vector<std::vector<char>> table::getData() const { return data; }
 
 void table::print() const {
-  for (int i = 0; i < data.size(); i++) {
-    for (int j = 0; j < data[i].size(); j++) {
-      std::cout << data[i][j];
+  if (data.size() < 100) {
+    for (int i = 0; i < data.size(); i++) {
+      for (int j = 0; j < data.size(); j++) {
+        std::cout << data[i][j];
+      }
+      std::cout << std::endl;
     }
-    std::cout << std::endl;
+  } else {
+    std::cout << "[" << data.size() << "X" << data.size() << "]" << std::endl;
   }
 }

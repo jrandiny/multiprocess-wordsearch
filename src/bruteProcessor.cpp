@@ -7,7 +7,7 @@
 void bruteProcessor::process() {
   std::vector<std::vector<char>> data = (this->data).getData();
   int row = data.size();
-  int col = data[0].size();
+  int col = data.size();
 
   double startTime = omp_get_wtime();
 
