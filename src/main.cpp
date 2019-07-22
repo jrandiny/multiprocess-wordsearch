@@ -1,3 +1,4 @@
+#include <table.h>
 #include <iostream>
 #include <string>
 
@@ -14,6 +15,15 @@ int main(int argc, char* argv[]) {
   }
 
   std::cout << "Opening " << filePath << std::endl;
+
+  try {
+    table wordTable(filePath);
+    std::cout << "Tabel : " << std::endl;
+    wordTable.print();
+
+  } catch (const std::exception& e) {
+    std::cerr << e.what() << '\n';
+  }
 
   return 0;
 }
