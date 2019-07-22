@@ -2,10 +2,15 @@
 #include <table.h>
 #include <string>
 
-enum direction { horizontal, vertical, diagonal, reverseDiagonal };
+enum direction {
+  horizontal = 0,
+  vertical = 1,
+  diagonal = 2,
+  reverseDiagonal = 3
+};
 
 class processor {
- private:
+ protected:
   table data;
   int threadCount;
   std::string query;
@@ -17,7 +22,7 @@ class processor {
 
  public:
   processor(table, std::string, int);
-  virtual void process();
+  virtual void process() = 0;
   bool isFound() const;
   int getFoundRow() const;
   int getFoundCol() const;

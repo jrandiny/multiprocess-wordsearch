@@ -1,3 +1,5 @@
+#include <openmpProcessor.h>
+#include <bruteProcessor.h>
 #include <processor.h>
 #include <table.h>
 #include <iostream>
@@ -30,7 +32,10 @@ int main(int argc, char* argv[]) {
   std::cout << "Thread count : ";
   std::cin >> threadCount;
 
-  processor searchProcessor(wordTable, searchQuery, threadCount);
+  // processor searchProcessor(wordTable, searchQuery, threadCount);
+  // openmpProcessor searchProcessor(wordTable, searchQuery, threadCount);
+  bruteProcessor searchProcessor(wordTable, searchQuery, threadCount);
+
 
   searchProcessor.process();
 
@@ -39,8 +44,8 @@ int main(int argc, char* argv[]) {
               << " col " << searchProcessor.getFoundCol() << " on the "
               << searchProcessor.getFoundDirection() << " direction "
               << std::endl;
-  }else{
-    std::cout<<"Word not found"<<std::endl;
+  } else {
+    std::cout << "Word not found" << std::endl;
   }
 
   return 0;
