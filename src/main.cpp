@@ -1,4 +1,5 @@
 #include <bruteProcessor.h>
+#include <config.h>
 #include <openmpProcessor.h>
 #include <processor.h>
 #include <table.h>
@@ -36,7 +37,9 @@ int main(int argc, char* argv[]) {
 
   std::cout << "Avaiable processor:" << std::endl;
   std::cout << "1. No processor (not parallel)" << std::endl;
+#ifdef BUILD_OPENMP
   std::cout << "2. OpenMP" << std::endl;
+#endif
   std::cout << "Processor : ";
   std::cin >> processorOption;
 
@@ -47,10 +50,12 @@ int main(int argc, char* argv[]) {
       searchProcessor = std::unique_ptr<processor>(
           new bruteProcessor(wordTable, searchQuery, threadCount));
       break;
+#ifdef BUILD_OPENMP
     case 2:
       searchProcessor = std::unique_ptr<processor>(
           new openmpProcessor(wordTable, searchQuery, threadCount));
       break;
+#endif
     default:
       throw std::runtime_error("Invalid processor option");
       break;

@@ -1,0 +1,3 @@
+#cmakedefine BUILD_OPENMP
+#cmakedefine BUILD_OPENMPI
+#cmakedefine BUILD_CUDA
