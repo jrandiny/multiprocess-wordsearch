@@ -1,5 +1,5 @@
 #include <bruteProcessor.h>
-#include <omp.h>
+#include <chrono>
 #include <iostream>
 #include <utility>
 #include <vector>
@@ -9,7 +9,8 @@ void bruteProcessor::process() {
   int row = data.size();
   int col = data.size();
 
-  double startTime = omp_get_wtime();
+  std::chrono::time_point<std::chrono::high_resolution_clock> startTime =
+      std::chrono::high_resolution_clock::now();
 
   int i = 0;
   int j = 0;
@@ -51,7 +52,8 @@ void bruteProcessor::process() {
     i++;
   }
 
-  double timeElapsed = omp_get_wtime() - startTime;
+  std::chrono::duration<double> timeElapsed =
+      std::chrono::high_resolution_clock::now() - startTime;
 
-  std::cout << "Time " << timeElapsed << " seconds" << std::endl;
+  std::cout << "Time " << timeElapsed.count() << " seconds" << std::endl;
 }

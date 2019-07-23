@@ -1,6 +1,7 @@
 #include <omp.h>
 #include <openmpProcessor.h>
 #include <processor.h>
+#include <chrono>
 #include <cmath>
 #include <iostream>
 
@@ -9,7 +10,8 @@ void openmpProcessor::process() {
   int row = data.size();
   int col = data.size();
 
-  double startTime = omp_get_wtime();
+  std::chrono::time_point<std::chrono::high_resolution_clock> startTime =
+      std::chrono::high_resolution_clock::now();
 
   std::vector<std::pair<int, int>> move = {{0, 1}, {1, 0}, {1, 1}, {-1, -1}};
 
@@ -65,7 +67,8 @@ void openmpProcessor::process() {
     }
   }
 
-  double timeElapsed = omp_get_wtime() - startTime;
+  std::chrono::duration<double> timeElapsed =
+      std::chrono::high_resolution_clock::now() - startTime;
 
-  std::cout << "Time " << timeElapsed << " seconds" << std::endl;
+  std::cout << "Time " << timeElapsed.count() << " seconds" << std::endl;
 }
