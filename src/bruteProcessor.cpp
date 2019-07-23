@@ -23,8 +23,9 @@ void bruteProcessor::process() {
         for (int dir = 0; dir < 4; dir++) {
           int k = 0;
           while (!found && k < query.size()) {
-            int tempRow = i + move[dir].first * k;
-            int tempCol = j + move[dir].second * k;
+            direction currDir = static_cast<direction>(dir);
+            int tempRow = i + move[currDir].first * k;
+            int tempCol = j + move[currDir].second * k;
 
             if (tempRow >= row || tempCol >= col || tempRow < 0 ||
                 tempCol < 0) {
@@ -39,7 +40,7 @@ void bruteProcessor::process() {
               found = true;
               foundRow = i + 1;
               foundCol = j + 1;
-              foundDir = static_cast<direction>(dir);
+              foundDir = currDir;
             }
             k++;
           }
