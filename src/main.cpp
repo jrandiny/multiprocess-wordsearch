@@ -1,5 +1,4 @@
 #include <bruteProcessor.h>
-#include <config.h>
 #include <openmpProcessor.h>
 #include <openmpiProcessor.h>
 #include <processor.h>
@@ -38,10 +37,10 @@ int main(int argc, char* argv[]) {
 
   std::cout << "Avaiable processor:" << std::endl;
   std::cout << "1. No processor (not parallel)" << std::endl;
-#ifdef BUILD_OPENMP
+#ifdef USE_OPENMP
   std::cout << "2. OpenMP" << std::endl;
 #endif
-#ifdef BUILD_OPENMPI
+#ifdef USE_OPENMPI
   std::cout << "3. OpenMPI" << std::endl;
 #endif
   std::cout << "Processor : ";
@@ -54,13 +53,13 @@ int main(int argc, char* argv[]) {
       searchProcessor = std::unique_ptr<processor>(
           new bruteProcessor(wordTable, searchQuery, threadCount));
       break;
-#ifdef BUILD_OPENMP
+#ifdef USE_OPENMP
     case 2:
       searchProcessor = std::unique_ptr<processor>(
           new openmpProcessor(wordTable, searchQuery, threadCount));
       break;
 #endif
-#ifdef BUILD_OPENMPI
+#ifdef USE_OPENMPI
     case 3:
       searchProcessor = std::unique_ptr<processor>(
           new openmpiProcessor(wordTable, searchQuery, threadCount));
