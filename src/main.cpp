@@ -1,6 +1,7 @@
 #include <bruteProcessor.h>
 #include <config.h>
 #include <openmpProcessor.h>
+#include <openmpiProcessor.h>
 #include <processor.h>
 #include <table.h>
 #include <iostream>
@@ -40,6 +41,9 @@ int main(int argc, char* argv[]) {
 #ifdef BUILD_OPENMP
   std::cout << "2. OpenMP" << std::endl;
 #endif
+#ifdef BUILD_OPENMPI
+  std::cout << "3. OpenMPI" << std::endl;
+#endif
   std::cout << "Processor : ";
   std::cin >> processorOption;
 
@@ -54,6 +58,12 @@ int main(int argc, char* argv[]) {
     case 2:
       searchProcessor = std::unique_ptr<processor>(
           new openmpProcessor(wordTable, searchQuery, threadCount));
+      break;
+#endif
+#ifdef BUILD_OPENMPI
+    case 3:
+      searchProcessor = std::unique_ptr<processor>(
+          new openmpiProcessor(wordTable, searchQuery, threadCount));
       break;
 #endif
     default:

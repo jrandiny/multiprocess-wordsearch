@@ -1,3 +1,3 @@
 #define BUILD_OPENMP
-/* #undef BUILD_OPENMPI */
+#define BUILD_OPENMPI
 /* #undef BUILD_CUDA */

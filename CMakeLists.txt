@@ -4,7 +4,7 @@ project (wordsearch)
 include_directories(include)
 
 option(BUILD_OPENMP "Build openmp processor" ON)
-option(BUILD_OPENMPI "Build openmpi processor" OFF)
+option(BUILD_OPENMPI "Build openmpi processor" ON)
 option(BUILD_CUDA "Build cuda processor" OFF)
 
 configure_file("config.h.in" "${CMAKE_CURRENT_SOURCE_DIR}/include/config.h")
@@ -17,12 +17,28 @@ set(wordsearch_src
 )
 
 if(BUILD_OPENMP)
-  find_package(OpenMP)
+  find_package(OpenMP REQUIRED)
   LIST(APPEND wordsearch_src "src/openmpProcessor.cpp")
+endif()
+
+if(BUILD_OPENMPI)
+  find_package(MPI REQUIRED)
+  LIST(APPEND wordsearch_src "src/openmpiProcessor.cpp")
+
+  add_executable(openmpiWorker
+    "src/openmpiWorker.cpp"
+  )
+
+  target_link_libraries(openmpiWorker PUBLIC MPI::MPI_CXX)
+
 endif()
 
 add_executable(wordsearch ${wordsearch_src})
 
 if(BUILD_OPENMP)
   target_link_libraries(wordsearch PUBLIC OpenMP::OpenMP_CXX)
+endif()
+
+if(BUILD_OPENMPI)
+  target_link_libraries(wordsearch PUBLIC MPI::MPI_CXX)
 endif()
