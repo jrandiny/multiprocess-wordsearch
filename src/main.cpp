@@ -1,11 +1,21 @@
 #include <bruteProcessor.h>
-#include <openmpProcessor.h>
-#include <openmpiProcessor.h>
 #include <processor.h>
 #include <table.h>
 #include <iostream>
 #include <memory>
 #include <string>
+
+#ifdef USE_OPENMP
+#include <openmpProcessor.h>
+#endif
+
+#ifdef USE_OPENMPI
+#include <openmpiProcessor.h>
+#endif
+
+#ifdef USE_CUDA
+#include <cudaProcessor.h>
+#endif
 
 int main(int argc, char* argv[]) {
   std::cout << "Welcome to wordsearch" << std::endl;
@@ -43,6 +53,9 @@ int main(int argc, char* argv[]) {
 #ifdef USE_OPENMPI
   std::cout << "3. OpenMPI" << std::endl;
 #endif
+#ifdef USE_CUDA
+  std::cout << "4. CUDA" << std::endl;
+#endif
   std::cout << "Processor : ";
   std::cin >> processorOption;
 
@@ -63,6 +76,12 @@ int main(int argc, char* argv[]) {
     case 3:
       searchProcessor = std::unique_ptr<processor>(
           new openmpiProcessor(wordTable, searchQuery, threadCount));
+      break;
+#endif
+#ifdef USE_CUDA
+    case 4:
+      searchProcessor = std::unique_ptr<processor>(
+          new cudaProcessor(wordTable, searchQuery, threadCount));
       break;
 #endif
     default:

@@ -34,6 +34,11 @@ if(BUILD_OPENMPI)
 
 endif()
 
+if(BUILD_CUDA)
+  add_definitions(-DUSE_CUDA)
+  LIST(APPEND wordsearch_src "src/cudaProcessor.cpp")
+endif()
+
 add_executable(wordsearch ${wordsearch_src})
 
 if(BUILD_OPENMP)
@@ -42,4 +47,8 @@ endif()
 
 if(BUILD_OPENMPI)
   target_link_libraries(wordsearch PUBLIC MPI::MPI_CXX)
+endif()
+
+if(BUILD_CUDA)
+
 endif()
