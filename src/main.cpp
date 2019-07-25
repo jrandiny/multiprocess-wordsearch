@@ -42,9 +42,6 @@ int main(int argc, char* argv[]) {
   std::cout << "Search query : ";
   std::cin >> searchQuery;
 
-  std::cout << "Thread count : ";
-  std::cin >> threadCount;
-
   std::cout << "Avaiable processor:" << std::endl;
   std::cout << "1. No processor (not parallel)" << std::endl;
 #ifdef USE_OPENMP
@@ -63,23 +60,30 @@ int main(int argc, char* argv[]) {
 
   switch (processorOption) {
     case 1:
+      threadCount = 1;
       searchProcessor = std::unique_ptr<processor>(
           new bruteProcessor(wordTable, searchQuery, threadCount));
       break;
 #ifdef USE_OPENMP
     case 2:
+      std::cout << "CPU thread count : ";
+      std::cin >> threadCount;
       searchProcessor = std::unique_ptr<processor>(
           new openmpProcessor(wordTable, searchQuery, threadCount));
       break;
 #endif
 #ifdef USE_OPENMPI
     case 3:
+      std::cout << "CPU process count : ";
+      std::cin >> threadCount;
       searchProcessor = std::unique_ptr<processor>(
           new openmpiProcessor(wordTable, searchQuery, threadCount));
       break;
 #endif
 #ifdef USE_CUDA
     case 4:
+      std::cout << "GPU thread count : ";
+      std::cin >> threadCount;
       searchProcessor = std::unique_ptr<processor>(
           new cudaProcessor(wordTable, searchQuery, threadCount));
       break;

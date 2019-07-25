@@ -3,7 +3,6 @@
 #include <processor.h>
 #include <iostream>
 #include <string>
-#include <utility>
 #include <vector>
 
 __global__ void calculate(int row, char* data, int queryLength, char* query,
@@ -11,9 +10,9 @@ __global__ void calculate(int row, char* data, int queryLength, char* query,
   int move[8] = {0, 1, 1, 0, 1, 1, -1, -1};
 
   int col = row;
-  int threadCount = blockDim.x;
+  int threadCount = blockDim.x * gridDim.x;
 
-  int tid = threadIdx.x;
+  int tid = blockIdx.x * blockDim.x + threadIdx.x;
   int segment = row / threadCount;
 
   int i = segment * tid;
@@ -83,8 +82,27 @@ void docuda(char* cpuData, int row, std::string cpuQuery, int threadCount,
     serialData[i] = cpuData[i];
   }
 
-  calculate<<<1, threadCount>>>(row, serialData, cpuQuery.size(), query,
-                                result);
+  cudaDeviceProp props;
+  cudaGetDeviceProperties(&props, 0);
+  std::cout << "Device info" << std::endl;
+  std::cout << props.name << ": " << props.major << "." << props.minor
+            << std::endl;
+  std::cout << "  Warp size            : " << props.warpSize << std::endl;
+  std::cout << "  Threads per block    : " << props.maxThreadsPerBlock
+            << std::endl;
+  std::cout << "  SM (Processor) count : " << props.multiProcessorCount
+            << std::endl;
+
+  int threadPerBlock = 128;
+  std::cout << "Thread per block (recommended 128/256): ";
+  std::cin >> threadPerBlock;
+
+  int blockCount = threadCount / threadPerBlock;
+
+  std::cout << "Using " << blockCount << " blocks" << std::endl;
+
+  calculate<<<blockCount, threadPerBlock>>>(row, serialData, cpuQuery.size(),
+                                            query, result);
 
   cudaDeviceSynchronize();
 
