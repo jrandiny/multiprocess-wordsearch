@@ -24,6 +24,7 @@ void bruteProcessor::process() {
         for (int dir = 0; dir < 4; dir++) {
           int k = 0;
           while (!found && k < query.size()) {
+            std::cout << "brt" << k << std::endl;
             direction currDir = static_cast<direction>(dir);
             int tempRow = i + move[currDir].first * k;
             int tempCol = j + move[currDir].second * k;

@@ -35,8 +35,12 @@ if(BUILD_OPENMPI)
 endif()
 
 if(BUILD_CUDA)
+  enable_language(CUDA)
   add_definitions(-DUSE_CUDA)
   LIST(APPEND wordsearch_src "src/cudaProcessor.cpp")
+  add_library(cudaWorker
+    "src/cudaWorker.cu"
+  )
 endif()
 
 add_executable(wordsearch ${wordsearch_src})
@@ -50,5 +54,5 @@ if(BUILD_OPENMPI)
 endif()
 
 if(BUILD_CUDA)
-
+  target_link_libraries(wordsearch PUBLIC cudaWorker)
 endif()
