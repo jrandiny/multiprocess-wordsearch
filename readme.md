@@ -17,7 +17,15 @@ BUILD_OPENMPI=OFF
 BUILD_CUDA=OFF
 ```
 
-## Input
+**Example command**
+```
+mkdir build
+cd build
+cmake .. -DBUILD_OPENMPI=ON //Build with OpenMP and OpenMPI
+make
+```
+
+## Usage
 
 This program accepts text file containing square grid of letter
 
